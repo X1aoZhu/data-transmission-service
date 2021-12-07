@@ -175,7 +175,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.zhu.dts.core.Sync2Kafka</mainClass>
+                            <mainClass>com.zhu.dts.core.DbSync2Kafka</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -229,7 +229,7 @@
             <!--                            </filters>-->
             <!--                            <transformers>-->
             <!--                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
-            <!--                                    <mainClass>com.zhu.dts.core.Sync2Kafka</mainClass>-->
+            <!--                                    <mainClass>com.zhu.dts.core.DbSync2Kafka</mainClass>-->
             <!--                                </transformer>-->
             <!--                            </transformers>-->
             <!--                        </configuration>-->

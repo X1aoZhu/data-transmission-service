@@ -18,7 +18,7 @@ import java.util.Properties;
  * @Author ZhuHaiBo
  * @Create 2021/11/30 1:01
  */
-public class Sync2Kafka {
+public class DbSync2Kafka {
 
     private static final String DEFAULT_TOPIC = "default_topic";
 
