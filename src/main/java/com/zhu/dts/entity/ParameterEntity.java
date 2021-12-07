@@ -1,9 +1,6 @@
 package com.zhu.dts.entity;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @Author ZhuHaiBo
@@ -29,10 +26,12 @@ public class ParameterEntity {
     private String serviceIdRange;
     private Long configCheckpointInterval;
 
+    private boolean metadataFilter;
+
     public ParameterEntity() {
     }
 
-    public ParameterEntity(String dataSourceType, String configHostname, String configPort, String configUsername, String configPassword, String configDatabaseName, String configTableList, String configKafkaBootstrapServer, String kafkaTopic, String serviceIdRange, Long configCheckpointInterval) {
+    public ParameterEntity(String dataSourceType, String configHostname, String configPort, String configUsername, String configPassword, String configDatabaseName, String configTableList, String configKafkaBootstrapServer, String kafkaTopic, String serviceIdRange, Long configCheckpointInterval, boolean metadataFilter) {
         this.dataSourceType = dataSourceType;
         this.configHostname = configHostname;
         this.configPort = configPort;
@@ -44,6 +43,7 @@ public class ParameterEntity {
         this.kafkaTopic = kafkaTopic;
         this.serviceIdRange = serviceIdRange;
         this.configCheckpointInterval = configCheckpointInterval;
+        this.metadataFilter = metadataFilter;
     }
 
     public String getDataSourceType() {
@@ -140,5 +140,13 @@ public class ParameterEntity {
 
     public void setConfigCheckpointInterval(Long configCheckpointInterval) {
         this.configCheckpointInterval = configCheckpointInterval;
+    }
+
+    public boolean isMetadataFilter() {
+        return metadataFilter;
+    }
+
+    public void setMetadataFilter(boolean metadataFilter) {
+        this.metadataFilter = metadataFilter;
     }
 }

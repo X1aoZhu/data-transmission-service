@@ -1,7 +1,6 @@
 package com.zhu.dts.debezium;
 
 
-import com.ververica.cdc.connectors.shaded.org.apache.kafka.connect.data.Schema;
 import com.ververica.cdc.connectors.shaded.org.apache.kafka.connect.json.JsonConverter;
 import com.ververica.cdc.connectors.shaded.org.apache.kafka.connect.source.SourceRecord;
 import com.ververica.cdc.connectors.shaded.org.apache.kafka.connect.storage.ConverterType;
@@ -10,13 +9,14 @@ import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.util.Collector;
 
+
 import java.util.HashMap;
 
 /**
  * @Author ZhuHaiBo
  * @Create 2021/12/1 1:59
  */
-public class MyDebeziumDeserializationSchema extends JsonConverter implements DebeziumDeserializationSchema<String> {
+public class MyDebeziumDeserializationSchema implements DebeziumDeserializationSchema<String> {
 
     private transient JsonConverter jsonConverter;
 
@@ -44,10 +44,4 @@ public class MyDebeziumDeserializationSchema extends JsonConverter implements De
     public TypeInformation<String> getProducedType() {
         return BasicTypeInfo.STRING_TYPE_INFO;
     }
-
-    @Override
-    public byte[] fromConnectData(String topic, Schema schema, Object value) {
-        return super.fromConnectData(topic, schema, value);
-    }
-
 }

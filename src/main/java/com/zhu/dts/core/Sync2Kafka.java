@@ -1,21 +1,16 @@
 package com.zhu.dts.core;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ververica.cdc.connectors.mysql.source.MySqlSource;
 import com.ververica.cdc.connectors.mysql.table.StartupOptions;
-import com.ververica.cdc.debezium.JsonDebeziumDeserializationSchema;
 import com.zhu.dts.debezium.MyDebeziumDeserializationSchema;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.java.utils.ParameterTool;
+import org.apache.flink.kafka.shaded.org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import com.zhu.dts.entity.ParameterEntity;
 import com.zhu.dts.kafka.MyKafkaSerializationSchema;
 import com.zhu.dts.util.SystemConfigUtil;
-import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.common.serialization.SimpleStringSchema;
-import org.apache.flink.api.java.functions.KeySelector;
-import org.apache.flink.api.java.utils.ParameterTool;
-import org.apache.flink.kafka.shaded.org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 
 import java.util.Properties;
 
@@ -55,7 +50,7 @@ public class Sync2Kafka {
 
 
         FlinkKafkaProducer<String> kafkaProducer = new FlinkKafkaProducer<>(DEFAULT_TOPIC,
-                new MyKafkaSerializationSchema(), kafkaProperties, FlinkKafkaProducer.Semantic.AT_LEAST_ONCE);
+                new MyKafkaSerializationSchema(Boolean.toString(configEntity.isMetadataFilter())), kafkaProperties, FlinkKafkaProducer.Semantic.AT_LEAST_ONCE);
 
         // enable checkpoint
         env.enableCheckpointing(configEntity.getConfigCheckpointInterval());

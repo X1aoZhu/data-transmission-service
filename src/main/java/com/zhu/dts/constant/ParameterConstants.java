@@ -33,4 +33,9 @@ public class ParameterConstants {
     public final static String SERVICE_ID_RANGE = "service-id";
 
     public final static String CHECKPOINT_INTERVAL = "checkpoint-interval";
+
+    /**
+     * default: false
+     */
+    public final static String METADATA_FILTER = "metadata-flag";
 }

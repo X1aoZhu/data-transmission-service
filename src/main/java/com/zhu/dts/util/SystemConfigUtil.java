@@ -4,7 +4,6 @@ import com.zhu.dts.constant.ParameterConstants;
 import com.zhu.dts.entity.ParameterEntity;
 import org.apache.flink.api.java.utils.ParameterTool;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -29,6 +28,7 @@ public class SystemConfigUtil {
         parameterEntity.setConfigUsername(parameters.get(ParameterConstants.USERNAME));
         parameterEntity.setConfigPassword(parameters.get(ParameterConstants.PASSWORD));
         parameterEntity.setConfigDatabaseName(databaseName);
+        parameterEntity.setMetadataFilter(Boolean.parseBoolean(parameters.get(ParameterConstants.METADATA_FILTER)));
 
         parameterEntity.setConfigKafkaBootstrapServer(parameters.get(ParameterConstants.KAFKA_BOOTSTRAP_SERVER));
         parameterEntity.setServiceIdRange(parameters.get(ParameterConstants.SERVICE_ID_RANGE));
