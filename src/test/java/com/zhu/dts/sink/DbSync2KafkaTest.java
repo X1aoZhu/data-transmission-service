@@ -2,20 +2,15 @@ package com.zhu.dts.sink;
 
 import com.ververica.cdc.connectors.mysql.source.MySqlSource;
 import com.ververica.cdc.connectors.mysql.table.StartupOptions;
-import com.zhu.dts.debezium.MyDebeziumDeserializationSchema;
-import com.zhu.dts.entity.ParameterEntity;
-import com.zhu.dts.kafka.MyKafkaSerializationSchema;
-import com.zhu.dts.util.SystemConfigUtil;
+import com.zhu.dts.debezium.StringDebeziumDeserializationSchema;
+import com.zhu.dts.kafka.StringKafkaSerializationSchema;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.kafka.shaded.org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import org.junit.Test;
 
 import java.util.Properties;
-
-import static org.junit.Assert.*;
 
 /**
  * @Author ZhuHaiBo
@@ -42,7 +37,7 @@ public class DbSync2KafkaTest {
                 .tableList(TABLE_NAME)
                 .username("root")
                 .password("root")
-                .deserializer(new MyDebeziumDeserializationSchema())
+                .deserializer(new StringDebeziumDeserializationSchema())
                 .serverTimeZone("Asia/Shanghai")
                 .startupOptions(StartupOptions.initial())
                 .build();
@@ -55,7 +50,7 @@ public class DbSync2KafkaTest {
 
 
         FlinkKafkaProducer<String> kafkaProducer = new FlinkKafkaProducer<>(DEFAULT_TOPIC,
-                new MyKafkaSerializationSchema(), kafkaProperties, FlinkKafkaProducer.Semantic.AT_LEAST_ONCE);
+                new StringKafkaSerializationSchema(), kafkaProperties, FlinkKafkaProducer.Semantic.AT_LEAST_ONCE);
 
         // enable checkpoint
         env.enableCheckpointing(3000L);
