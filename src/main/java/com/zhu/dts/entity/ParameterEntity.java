@@ -1,7 +1,6 @@
 package com.zhu.dts.entity;
 
 
-
 /**
  * @Author ZhuHaiBo
  * @Create 2021/11/30 1:41
@@ -25,6 +24,8 @@ public class ParameterEntity {
 
     private String serviceIdRange;
     private Long configCheckpointInterval;
+
+    private Integer sinkParallelism = 1;
 
     private boolean metadataFilter;
 
@@ -148,5 +149,13 @@ public class ParameterEntity {
 
     public void setMetadataFilter(boolean metadataFilter) {
         this.metadataFilter = metadataFilter;
+    }
+
+    public Integer getSinkParallelism() {
+        return sinkParallelism;
+    }
+
+    public void setSinkParallelism(Integer sinkParallelism) {
+        this.sinkParallelism = sinkParallelism;
     }
 }

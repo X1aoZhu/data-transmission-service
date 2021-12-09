@@ -43,11 +43,24 @@ public class SystemConfigUtil {
             parameterEntity.setConfigTableList(tableStr);
         }
 
+        // checkpoint interval
         String checkpoint = parameters.get(ParameterConstants.CHECKPOINT_INTERVAL);
         if (null == checkpoint || checkpoint.length() == 0) {
             parameterEntity.setConfigCheckpointInterval(3000L);
         } else {
             parameterEntity.setConfigCheckpointInterval(Long.parseLong(checkpoint));
+        }
+
+        // sink 并行度
+        String sinkParallelismStr = parameters.get(ParameterConstants.SINK_PARALLELISM);
+        try {
+            if (null == sinkParallelismStr || Integer.parseInt(sinkParallelismStr) <= 0) {
+                parameterEntity.setSinkParallelism(1);
+            } else {
+                parameterEntity.setSinkParallelism(Integer.parseInt(sinkParallelismStr));
+            }
+        } catch (NumberFormatException e) {
+            parameterEntity.setSinkParallelism(1);
         }
 
         return parameterEntity;
