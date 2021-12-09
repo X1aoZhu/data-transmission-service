@@ -34,6 +34,7 @@
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>${scope}</scope>
         </dependency>
 
         <dependency>
@@ -47,6 +48,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.75</version>
+            <scope>${scope}</scope>
         </dependency>
 
         <!-- Apache Flink dependencies -->
@@ -109,18 +111,18 @@
             <scope>${scope}</scope>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.ververica</groupId>-->
-<!--            <artifactId>flink-connector-mysql-cdc</artifactId>-->
-<!--            <version>${flink.cdc.version}</version>-->
-<!--            <scope>${scope}</scope>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>io.debezium</groupId>-->
-<!--                    <artifactId>debezium-connector-mysql</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.ververica</groupId>-->
+        <!--            <artifactId>flink-connector-mysql-cdc</artifactId>-->
+        <!--            <version>${flink.cdc.version}</version>-->
+        <!--            <scope>${scope}</scope>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <groupId>io.debezium</groupId>-->
+        <!--                    <artifactId>debezium-connector-mysql</artifactId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.apache.flink</groupId>
