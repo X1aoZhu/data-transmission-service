@@ -2,19 +2,21 @@ package com.zhu.dts.core;
 
 import com.ververica.cdc.connectors.mysql.source.MySqlSource;
 import com.ververica.cdc.connectors.mysql.table.StartupOptions;
-import com.zhu.dts.debezium.MyDebeziumDeserializationSchema;
+import com.zhu.dts.debezium.StringDebeziumDeserializationSchema;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.kafka.shaded.org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import com.zhu.dts.entity.ParameterEntity;
-import com.zhu.dts.kafka.MyKafkaSerializationSchema;
+import com.zhu.dts.kafka.StringKafkaSerializationSchema;
 import com.zhu.dts.util.SystemConfigUtil;
 
 import java.util.Properties;
 
 /**
+ * dts kafka 单分区写入
+ *
  * @Author ZhuHaiBo
  * @Create 2021/11/30 1:01
  */
@@ -37,9 +39,10 @@ public class DbSync2Kafka {
                 .tableList(configEntity.getConfigTableList())
                 .username(configEntity.getConfigUsername())
                 .password(configEntity.getConfigPassword())
-                .deserializer(new MyDebeziumDeserializationSchema())
+                .deserializer(new StringDebeziumDeserializationSchema())
                 .serverTimeZone("Asia/Shanghai")
                 .startupOptions(StartupOptions.initial())
+                .serverId(configEntity.getServiceIdRange())
                 .build();
 
         // KafkaSink
@@ -47,21 +50,22 @@ public class DbSync2Kafka {
         kafkaProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, configEntity.getConfigKafkaBootstrapServer());
         kafkaProperties.put(ProducerConfig.ACKS_CONFIG, "-1");
         kafkaProperties.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
-
+        //properties.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "lz4");
 
         FlinkKafkaProducer<String> kafkaProducer = new FlinkKafkaProducer<>(DEFAULT_TOPIC,
-                new MyKafkaSerializationSchema(Boolean.toString(configEntity.isMetadataFilter())), kafkaProperties, FlinkKafkaProducer.Semantic.AT_LEAST_ONCE);
+                new StringKafkaSerializationSchema(Boolean.toString(configEntity.isMetadataFilter())), kafkaProperties, FlinkKafkaProducer.Semantic.AT_LEAST_ONCE);
 
         // enable checkpoint
         env.enableCheckpointing(configEntity.getConfigCheckpointInterval());
 
+        // 下游sink设置并行度，默认为1
         env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQL Source")
                 .name("mysqlcdc-source")
                 .uid("uid-mysqlcdc-source")
-                .addSink(kafkaProducer).name("kafka-sink").uid("kafka-sink");
+                .addSink(kafkaProducer).setParallelism(configEntity.getSinkParallelism())
+                .name("kafka-sink").uid("kafka-sink");
 
-        //mysqlSource.addSink(kafkaProducer).name("kafka-sink").uid("kafka-sink");
-
-        env.execute("Print MySQL Snapshot + Binlog");
+        // flink job name
+        env.execute(configEntity.getConfigTableList() + " DTS Start");
     }
 }

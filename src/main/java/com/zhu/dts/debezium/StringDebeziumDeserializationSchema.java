@@ -16,7 +16,7 @@ import java.util.HashMap;
  * @Author ZhuHaiBo
  * @Create 2021/12/1 1:59
  */
-public class MyDebeziumDeserializationSchema implements DebeziumDeserializationSchema<String> {
+public class StringDebeziumDeserializationSchema implements DebeziumDeserializationSchema<String> {
 
     private transient JsonConverter jsonConverter;
 
@@ -29,14 +29,9 @@ public class MyDebeziumDeserializationSchema implements DebeziumDeserializationS
             configs.put("schemas.enable", "false");
             this.jsonConverter.configure(configs);
         }
-
+        // 反序列化未设置pk到SourceRecord中，下游kafka partition 只能设置为单分区，保证消息不乱序
         byte[] bytes =
                 jsonConverter.fromConnectData(record.topic(), record.valueSchema(), record.value());
-        //HashMap<String, Object> parseObject = JSONObject.parseObject(new String(bytes), new TypeReference<HashMap<String, Object>>() {
-        //});
-        //HashMap<String, Object> source = (HashMap<String, Object>) parseObject.get("source");
-        //source.remove("version");
-        //collector.collect(String.valueOf(parseObject));
         collector.collect(new String(bytes));
     }
 

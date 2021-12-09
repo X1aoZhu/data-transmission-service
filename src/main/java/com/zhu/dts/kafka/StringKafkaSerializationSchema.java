@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @Author ZhuHaiBo
  * @Create 2021/11/30 22:08
  */
-public class MyKafkaSerializationSchema implements KafkaSerializationSchema<String> {
+public class StringKafkaSerializationSchema implements KafkaSerializationSchema<String> {
 
     private static final String TOPIC_PREFIX = "ods_";
 
@@ -26,7 +26,7 @@ public class MyKafkaSerializationSchema implements KafkaSerializationSchema<Stri
 
     private final String metadataFilterFlag;
 
-    public MyKafkaSerializationSchema(String metadataFilterFlag) {
+    public StringKafkaSerializationSchema(String metadataFilterFlag) {
         if (null == metadataFilterFlag || metadataFilterFlag.length() == 0) {
             this.metadataFilterFlag = FALSE_FLAG;
         } else {
@@ -34,7 +34,7 @@ public class MyKafkaSerializationSchema implements KafkaSerializationSchema<Stri
         }
     }
 
-    public MyKafkaSerializationSchema() {
+    public StringKafkaSerializationSchema() {
         this.metadataFilterFlag = TRUE_FLAG;
     }
 
