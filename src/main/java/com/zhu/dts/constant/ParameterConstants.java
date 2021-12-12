@@ -25,6 +25,9 @@ public class ParameterConstants {
      */
     public final static String TABLE_LIST = "table-list";
 
+    /**
+     * example: 192.168.240.155:9092,192.168.240.155:9093,192.168.240.155:9094
+     */
     public final static String KAFKA_BOOTSTRAP_SERVER = "bootstrap-server";
 
     /**
