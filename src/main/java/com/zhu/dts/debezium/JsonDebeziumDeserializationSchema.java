@@ -6,14 +6,15 @@ import com.ververica.cdc.connectors.shaded.org.apache.kafka.connect.data.Struct;
 import com.ververica.cdc.connectors.shaded.org.apache.kafka.connect.source.SourceRecord;
 import com.ververica.cdc.debezium.DebeziumDeserializationSchema;
 import com.zhu.dts.util.DateUtil;
+import io.debezium.time.Date;
+import io.debezium.time.Timestamp;
+import io.debezium.time.ZonedTimestamp;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.util.Collector;
 import io.debezium.data.Envelope;
 
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,7 +23,9 @@ import java.util.List;
  */
 public class JsonDebeziumDeserializationSchema implements DebeziumDeserializationSchema<JSONObject> {
 
-    private static final String DATE_TIME_SCHEMA_NAME = "io.debezium.time.ZonedTimestamp";
+    // io.debezium.time.Timestamp,io.debezium.time.Date,io.debezium.time.ZonedTimestamp
+    private static final List<String> DATE_TIME_ARRAY =
+            Arrays.asList(ZonedTimestamp.SCHEMA_NAME, Timestamp.SCHEMA_NAME, Date.SCHEMA_NAME);
 
     @Override
     public void deserialize(SourceRecord record, Collector<JSONObject> collector) throws Exception {
@@ -50,9 +53,9 @@ public class JsonDebeziumDeserializationSchema implements DebeziumDeserializatio
 
             beforeSchemaField.forEach(field -> {
                 String name = field.schema().name();
-                if (DATE_TIME_SCHEMA_NAME.equals(name)) {
+                if (DATE_TIME_ARRAY.contains(name)) {
                     String time = before.get(field).toString();
-                    beforeJson.put(field.name(), DateUtil.handlerDateTime(time));
+                    beforeJson.put(field.name(), DateUtil.handlerDateTime(time, name));
                 } else {
                     beforeJson.put(field.name(), before.get(field));
                 }
@@ -69,9 +72,9 @@ public class JsonDebeziumDeserializationSchema implements DebeziumDeserializatio
             List<Field> afterFields = after.schema().fields();
             afterFields.forEach(field -> {
                 String name = field.schema().name();
-                if (DATE_TIME_SCHEMA_NAME.equals(name)) {
+                if (DATE_TIME_ARRAY.contains(name)) {
                     String time = after.get(field).toString();
-                    afterJson.put(field.name(), DateUtil.handlerDateTime(time));
+                    afterJson.put(field.name(), DateUtil.handlerDateTime(time, name));
                 } else {
                     afterJson.put(field.name(), after.get(field));
                 }
@@ -80,7 +83,6 @@ public class JsonDebeziumDeserializationSchema implements DebeziumDeserializatio
         } else {
             result.put(Envelope.FieldName.AFTER, null);
         }
-
 
 
         // source
