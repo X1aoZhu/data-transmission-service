@@ -6,8 +6,11 @@ import com.ververica.cdc.connectors.mysql.table.StartupOptions;
 import com.zhu.dts.debezium.JsonDebeziumDeserializationSchema;
 import com.zhu.dts.kafka.JsonKafkaSerializationSchema;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.kafka.shaded.org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.flink.kafka.shaded.org.apache.kafka.common.config.TopicConfig;
+import org.apache.flink.kafka.shaded.org.apache.kafka.common.config.internals.BrokerSecurityConfigs;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import com.zhu.dts.entity.ParameterEntity;
@@ -63,8 +66,8 @@ public class DbSync2KafkaV2 {
         // sink kafka 根据pk进行多分区写入
         env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "mysql-source")
                 .name("mysql-source").uid("mysql-source")
-                .keyBy(json -> json.get("pk"))
-                .addSink(kafkaProducer).setParallelism(configEntity.getSinkParallelism())
+                .keyBy(((KeySelector<JSONObject, String>) jsonObject -> String.valueOf(jsonObject.get("pk"))))
+                .addSink(kafkaProducer)
                 .name("kafka-sink").uid("kafka-sink");
 
         // flink job name
