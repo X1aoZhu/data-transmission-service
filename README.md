@@ -5,8 +5,8 @@
 
 
 ### version
-+  master branch: [flink 1.13.2，flink-cdc 2.1.0]
-+  feature-1.13: [flink 1.13.3 flink-cdc 2.1.0]
++  branch/master : [flink 1.13.2，flink-cdc 2.1.0]
++  branch/feature-1.13: [flink 1.13.3 flink-cdc 2.1.0]
 
 ### quick start
 
