@@ -55,9 +55,11 @@ public class DbSync2KafkaTest {
         // enable checkpoint
         env.enableCheckpointing(3000L);
 
-        env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQL Source")
-                .name("mysqlcdc-source")
-                .uid("uid-mysqlcdc-source")
-                .addSink(kafkaProducer).name("kafka-sink").uid("kafka-sink");
+        //env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQL Source")
+        //        .name("mysqlcdc-source")
+        //        .uid("uid-mysqlcdc-source")
+        //        .addSink(kafkaProducer).name("kafka-sink").uid("kafka-sink");
+
+        env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQL Source").print();
     }
 }
