@@ -10,7 +10,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import com.zhu.dts.entity.ParameterEntity;
 import com.zhu.dts.kafka.StringKafkaSerializationSchema;
-import com.zhu.dts.util.SystemConfigUtil;
+import com.zhu.dts.util.SystemConfigConvertUtil;
 
 import java.util.Properties;
 
@@ -29,7 +29,7 @@ public class DbSync2Kafka {
 
         // 获取启动参数
         ParameterTool parameters = ParameterTool.fromArgs(args);
-        ParameterEntity configEntity = SystemConfigUtil.convert(parameters);
+        ParameterEntity configEntity = SystemConfigConvertUtil.convert(parameters);
 
         // MysqlSource
         MySqlSource<String> mySqlSource = MySqlSource.<String>builder()

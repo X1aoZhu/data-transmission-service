@@ -9,12 +9,10 @@ import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.kafka.shaded.org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.flink.kafka.shaded.org.apache.kafka.common.config.TopicConfig;
-import org.apache.flink.kafka.shaded.org.apache.kafka.common.config.internals.BrokerSecurityConfigs;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import com.zhu.dts.entity.ParameterEntity;
-import com.zhu.dts.util.SystemConfigUtil;
+import com.zhu.dts.util.SystemConfigConvertUtil;
 
 
 import java.time.Duration;
@@ -34,7 +32,7 @@ public class DbSync2KafkaV2 {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         ParameterTool parameterTool = ParameterTool.fromArgs(args);
-        ParameterEntity configEntity = SystemConfigUtil.convert(parameterTool);
+        ParameterEntity configEntity = SystemConfigConvertUtil.convert(parameterTool);
 
         MySqlSource<JSONObject> mySqlSource = MySqlSource.<JSONObject>builder()
                 .databaseList(configEntity.getConfigDatabaseName())

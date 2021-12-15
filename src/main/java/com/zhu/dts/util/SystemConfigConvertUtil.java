@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * @Author ZhuHaiBo
  * @Create 2021/11/30 1:34
  */
-public class SystemConfigUtil {
+public class SystemConfigConvertUtil {
 
     private static final String SPLIT = ",";
 
