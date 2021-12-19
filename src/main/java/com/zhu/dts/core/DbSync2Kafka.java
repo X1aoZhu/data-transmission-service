@@ -62,7 +62,7 @@ public class DbSync2Kafka {
         env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQL Source")
                 .name("mysqlcdc-source")
                 .uid("uid-mysqlcdc-source")
-                .addSink(kafkaProducer).setParallelism(configEntity.getSinkParallelism())
+                .addSink(kafkaProducer)
                 .name("kafka-sink").uid("kafka-sink");
 
         // flink job name

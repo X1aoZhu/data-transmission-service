@@ -51,18 +51,6 @@ public class SystemConfigUtil {
             parameterEntity.setConfigCheckpointInterval(Long.parseLong(checkpoint));
         }
 
-        // sink 并行度
-        String sinkParallelismStr = parameters.get(ParameterConstants.SINK_PARALLELISM);
-        try {
-            if (null == sinkParallelismStr || Integer.parseInt(sinkParallelismStr) <= 0) {
-                parameterEntity.setSinkParallelism(1);
-            } else {
-                parameterEntity.setSinkParallelism(Integer.parseInt(sinkParallelismStr));
-            }
-        } catch (NumberFormatException e) {
-            parameterEntity.setSinkParallelism(1);
-        }
-
         return parameterEntity;
     }
 }

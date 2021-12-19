@@ -25,7 +25,6 @@ public class ParameterEntity {
     private String serviceIdRange;
     private Long configCheckpointInterval;
 
-    private Integer sinkParallelism = 1;
 
     private boolean metadataFilter;
 
@@ -151,11 +150,4 @@ public class ParameterEntity {
         this.metadataFilter = metadataFilter;
     }
 
-    public Integer getSinkParallelism() {
-        return sinkParallelism;
-    }
-
-    public void setSinkParallelism(Integer sinkParallelism) {
-        this.sinkParallelism = sinkParallelism;
-    }
 }

@@ -42,5 +42,4 @@ public class ParameterConstants {
      */
     public final static String METADATA_FILTER = "metadata-flag";
 
-    public final static String SINK_PARALLELISM = "sink_parallelism";
 }
